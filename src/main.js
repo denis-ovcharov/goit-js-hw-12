@@ -81,6 +81,20 @@ refs.form.addEventListener('submit', async e => {
 refs.loadMoreBtn.addEventListener('click', async () => {
     currentPage += 1;
     checkBtnStatus();
-    await loadImages(query,currentPage);
+    await loadImages(query, currentPage);
+    
+    
+    const galleryItem = document.querySelector('.gallery-item');
+    const itemHeight = galleryItem.getBoundingClientRect().height;
+    
+    
+    window.scrollBy({
+        top: itemHeight * 2,
+        left: 0,
+        behavior: "smooth",
+    });
 })
 //!===============================================================================
+
+
+
