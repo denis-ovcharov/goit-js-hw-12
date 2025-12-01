@@ -13,7 +13,10 @@ export const refs = {
     form: document.querySelector('.form'),
     gallery: document.querySelector('.gallery'),
     loader: document.querySelector('.loader'),
-    loadMoreBtn: document.querySelector('.load-more-btn')
+    loadMoreBtn: document.querySelector('.load-more-btn'),
+    get galleryItem() {
+        return document.querySelector('.gallery-item')
+    }
 }
  //!===============================================================================
 let query;
@@ -83,13 +86,10 @@ refs.loadMoreBtn.addEventListener('click', async () => {
     checkBtnStatus();
     await loadImages(query, currentPage);
     
-    
-    const galleryItem = document.querySelector('.gallery-item');
-    const itemHeight = galleryItem.getBoundingClientRect().height;
-    
+    const galleryItemHeight = refs.galleryItem.getBoundingClientRect().height;
     
     window.scrollBy({
-        top: itemHeight * 2,
+        top: galleryItemHeight * 2,
         left: 0,
         behavior: "smooth",
     });
