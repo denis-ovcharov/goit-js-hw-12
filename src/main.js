@@ -58,16 +58,6 @@ refs.form.addEventListener('submit', async e => {
             totalPages = Math.ceil(res.totalHits / PAGE_SIZE);
             checkBtnStatus();
 
-            if (currentPage >= totalPages) {
-                iziToast.info({
-                    title: "Info",
-                    message: "We're sorry, but you've reached the end of search results.",
-                    position: 'bottomCenter',
-                });
-}
-            
-
-
         } catch (err) {
             iziToast.error({
                 title: "Error",
@@ -93,6 +83,14 @@ refs.loadMoreBtn.addEventListener('click', async () => {
         left: 0,
         behavior: "smooth",
     });
+
+    if (currentPage >= totalPages) {
+        iziToast.info({
+            title: "Info",
+            message: "We're sorry, but you've reached the end of search results.",
+            position: 'topRight',
+        });
+}
 })
 //!===============================================================================
 
