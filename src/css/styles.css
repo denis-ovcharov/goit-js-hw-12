@@ -69,14 +69,16 @@ main>ul {
     padding: 0;
     list-style: none;
     display: flex;
+    justify-content:center;
     flex-wrap: wrap;
     flex-direction: row;
     gap: 24px;
     box-sizing: border-box;
+    flex: 3 1 1;
 }
 
 .gallery-item {
-    width: 340px;
+    min-width: 340px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -89,7 +91,7 @@ main>ul {
         0 2px 6px rgba(78, 117, 255, 0.18),
         0 0 6px rgba(78, 117, 255, 0.14);
     transition: box-shadow 180ms ease, transform 120ms ease;
-
+    
 }
 
 .gallery-item:hover {
