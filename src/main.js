@@ -52,9 +52,19 @@ refs.form.addEventListener('submit', async e => {
             }
             createGallery(res.hits);
 
-            totalPages = Math.ceil(res.total / PAGE_SIZE);
+            totalPages = Math.ceil(res.totalHits / PAGE_SIZE);
             checkBtnStatus();
+
+            if (currentPage >= totalPages) {
+                iziToast.info({
+                    title: "Info",
+                    message: "We're sorry, but you've reached the end of search results.",
+                    position: 'bottomCenter',
+                });
+}
             
+
+
         } catch (err) {
             iziToast.error({
                 title: "Error",
