@@ -1,7 +1,9 @@
 import { refs } from "../main";
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
+import { currentPage, totalPages } from '../main.js';
 
+//!===============================================================================
 export function createGallery(images) {
     const markup = images.map((image) => 
         `<li class="gallery-item">
@@ -17,7 +19,7 @@ export function createGallery(images) {
       </li>`
     ).join('');
 
-  refs.gallery.innerHTML = markup;
+  refs.gallery.insertAdjacentHTML('beforeend', markup);
 
   const simpleLightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
@@ -26,15 +28,33 @@ export function createGallery(images) {
 
     simpleLightbox.refresh();
 }
-
-
+//!===============================================================================
 
 export function clearGallery() {
-    refs.gallery.innerHTML = '';
+  refs.gallery.innerHTML = '';
 }
+//!===============================================================================
 export function showLoader() {
-    refs.loader.classList.remove('hidden');
+  refs.loader.classList.remove('hidden');
 }
+//!===============================================================================
 export function hideLoader() {
-    refs.loader.classList.add('hidden')
+  refs.loader.classList.add('hidden');
 }
+//!===============================================================================
+export function showLoadMoreButton() {
+  refs.loadMoreBtn.classList.remove('hidden');
+}
+//!===============================================================================
+export function hideLoadMoreButton() {
+  refs.loadMoreBtn.classList.add('hidden');
+}
+//!===============================================================================
+export function checkBtnStatus() {
+  if (currentPage < totalPages) {
+    showLoadMoreButton();
+  } else {
+    hideLoadMoreButton();
+  }
+}
+//!===============================================================================
