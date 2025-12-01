@@ -6,7 +6,8 @@ import {
     clearGallery,
     showLoader,
     hideLoader,
-    checkBtnStatus
+    checkBtnStatus,
+    hideLoadMoreButton
 } from './js/render-functions.js';
 //!===============================================================================
 export const refs = {
@@ -45,6 +46,7 @@ refs.form.addEventListener('submit', async e => {
             const res = await getImagesByQuery(query, currentPage);
 
             if (res.hits.length === 0) {
+                hideLoadMoreButton();
                 iziToast.error({
                     title: "Error",
                     message: "Sorry, there are no images matching your search query. <br>Please try again!",
