@@ -6,8 +6,8 @@ import {
     clearGallery,
     showLoader,
     hideLoader,
-    checkBtnStatus,
-    hideLoadMoreButton
+    hideLoadMoreButton,
+    showLoadMoreButton
 } from './js/render-functions.js';
 //!===============================================================================
 export const refs = {
@@ -27,16 +27,29 @@ export const PAGE_SIZE = 15;
 //!===============================================================================
 refs.form.addEventListener('submit', async e => {
     e.preventDefault();
+
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+
     query = refs.form.elements.search.value.trim();
     currentPage = 1;
-    checkBtnStatus();
     if (!query) {
+        iziToast.error({
+            title: "Error",
+            message: "Please, enter your search query to get photos.",
+            position: 'topRight',
+        });
+        submitBtn.disabled = false;
         return;
     }
     clearGallery();
+    hideLoadMoreButton();
     showLoader();
     
     await loadImages(query, currentPage);
+
+    submitBtn.disabled = false;
+
     e.target.reset();
 });
 
@@ -58,8 +71,16 @@ refs.form.addEventListener('submit', async e => {
             createGallery(res.hits);
 
             totalPages = Math.ceil(res.totalHits / PAGE_SIZE);
-            checkBtnStatus();
-
+            if (currentPage < totalPages) {
+                showLoadMoreButton();
+            } else {
+                hideLoadMoreButton();
+                iziToast.info({
+                    title: "Info",
+                    message: "We're sorry, but you've reached the end of the results.",
+                    position: 'topRight',
+                });
+            }
         } catch (err) {
             iziToast.error({
                 title: "Error",
@@ -74,8 +95,9 @@ refs.form.addEventListener('submit', async e => {
 //!===============================================================================
 
 refs.loadMoreBtn.addEventListener('click', async () => {
+    hideLoadMoreButton();
     currentPage += 1;
-    checkBtnStatus();
+
     await loadImages(query, currentPage);
     
     const galleryItemHeight = refs.galleryItem.getBoundingClientRect().height;
@@ -85,15 +107,7 @@ refs.loadMoreBtn.addEventListener('click', async () => {
         left: 0,
         behavior: "smooth",
     });
-
-    if (currentPage >= totalPages) {
-        iziToast.info({
-            title: "Info",
-            message: "We're sorry, but you've reached the end of search results.",
-            position: 'topRight',
-        });
-}
-})
+});
 //!===============================================================================
 
 

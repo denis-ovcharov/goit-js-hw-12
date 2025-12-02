@@ -1,9 +1,12 @@
 import { refs } from "../main";
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-import { currentPage, totalPages } from '../main.js';
+
 
 //!===============================================================================
+
+let lightbox;
+
 export function createGallery(images) {
     const markup = images.map((image) => 
         `<li class="gallery-item">
@@ -21,16 +24,22 @@ export function createGallery(images) {
 
   refs.gallery.insertAdjacentHTML('beforeend', markup);
 
-  const simpleLightbox = new SimpleLightbox('.gallery a', {
-    captionsData: 'alt',
-    captionDelay: 250,
-  });
-
-    simpleLightbox.refresh();
+  if (!lightbox) {
+    lightbox = new SimpleLightbox('.gallery a', {
+      captionsData: 'alt',
+      captionDelay: 250,
+    });
+  } else {
+    lightbox.refresh();
+  }
 }
 //!===============================================================================
 
 export function clearGallery() {
+  if (lightbox) {
+    lightbox.destroy();
+    lightbox = null;
+  }
   refs.gallery.innerHTML = '';
 }
 //!===============================================================================
@@ -48,13 +57,5 @@ export function showLoadMoreButton() {
 //!===============================================================================
 export function hideLoadMoreButton() {
   refs.loadMoreBtn.classList.add('hidden');
-}
-//!===============================================================================
-export function checkBtnStatus() {
-  if (currentPage < totalPages) {
-    showLoadMoreButton();
-  } else {
-    hideLoadMoreButton();
-  }
 }
 //!===============================================================================
